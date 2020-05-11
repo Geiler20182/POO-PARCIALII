@@ -5,7 +5,7 @@ class Salon(nuevo_nombre : String, nueva_cap_max : Int) {
     private var _nombre : String = nuevo_nombre
     private var _luz : Boolean = false
     private var _cerradura : Boolean = false
-    private var _temperatura : Double = 23
+    private var _temperatura : Double = 23.0
     private var _capacidad_max : Int = nueva_cap_max    
     private var _mantenimiento : Boolean = false
 

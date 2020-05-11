@@ -10,10 +10,13 @@ object Test {
     def main(args: Array[String]) : Unit = {
 
         var sistema : Sistema =  new Sistema
-        
+
+        println("\n---------------------")
+        //sistema.mostrarSalones("LA") 
+        sistema.modificarTemperatura("LA1.0", 58.4)
+        sistema.inHabilitarSalon("LA1.4")
+        sistema.buscarSalonHorarios("LA1.4")
         println("\n---------------------\n")
-        sistema.mostrarSalones("LA") 
-        println("---------------------\n")
 
         /*
 

@@ -58,50 +58,49 @@ class Sistema {
         return false
     }
 
-    def inHabilitarSalon(salon : Salon) : Unit = {
+    def retornarPosSalon(nombre_salon : String) : Int =  {
 
-        var band : Boolean = false
         var pos : Int = 0
 
-        breakable {
-
-            for (reserva <- _reservas) {
-                if (verificarReserva(salon : Salon, reserva.getFecha() : Fecha) == true ) {
-                    band  = true
-                    break
-                }
-            }
+        for (salon <- _edificio.getSalones() ) {
+            
+            if (salon.getNombre() == nombre_salon)
+                return pos
+            pos = pos + 1
         }
+        return -1
+    }
 
-        if (band == false) {
+    def inHabilitarSalon(nombre_salon : String) : Unit = {
+
+        var band : Boolean = false
+        var pos : Int =  retornarPosSalon(nombre_salon)
+
+        if (pos != -1) {
 
             breakable {
 
-                for (s <- _edificio.getSalones()) {
-                    if (s.getNombre() == salon.getNombre()) {
-                        _edificio.getSalones()(pos).setMantenimiento(true)
+
+                for (reserva <- _reservas) {
+                    if (verificarReserva(_edificio.getSalones()(pos), reserva.getFecha() : Fecha) == true ) {
+                        band  = true
                         break
                     }
-                    pos = pos + 1
                 }
+            }
+
+            if (band == false) {
+                _edificio.getSalones()(pos).setMantenimiento(true)
             }
         }
-
     }
 
-    def habilitarSalon(salon : Salon) :  Unit = {
+    def habilitarSalon(nombre_salon : String) :  Unit = {
 
-        var pos : Int = 0
-
-        breakable {
-        
-            for (s <- _edificio.getSalones()) {
-                if (s.getNombre() == salon.getNombre() && s.getMantenimiento() == true) {
-                    _edificio.getSalones()(pos).setMantenimiento(false)
-                    break
-                }
-                pos = pos + 1
-            }
+        var pos : Int = retornarPosSalon(nombre_salon)
+            
+        if (pos != -1) {
+            _edificio.getSalones()(pos).setMantenimiento(false)
         }
     }
 
@@ -114,24 +113,24 @@ class Sistema {
 
             if ( (s.getNombre().charAt(0)  == nombre_salon.charAt(0)) || (nombre_salon == "TODOS")) {
 
-                println( "\n[" + sal + "] SALON " + s.getNombre()) 
+                println( "[" + sal + "] SALON " + s.getNombre()) 
                 print("    HORARIO          ESTADO")                    
 
-                var opcion : Int = 0
                 for (f <- _horarios_reservas) {
 
                     if (f.getSalon().getNombre() == s.getNombre()) {
 
+                        var opcion : Int = 1
                         for (h <- f.getHorariosReserva()) {
                             print("\n[" + opcion + "] [" + h._hora_inicio + ":00 - " + 
                             h._hora_final +":00] " + verEstadoSalon(s, h)  ) 
-                            
+                            opcion = opcion + 1
                         }
                     }
                 }
 
                 sal = sal + 1
-                println()
+                println("\n")
             }
         }
     }
@@ -192,21 +191,44 @@ class Sistema {
         return estado
     }
 
-    def verHorarioSalon(salon : Salon) : Unit = {
+    def buscarSalonHorarios(nombre_salon : String) : Unit = {
 
+        var existe : Boolean = false
+        var pos : Int = 0
 
-        /*print("\n     HORARIO    \tESTADO\n")   
-        var cont : Int = 0
-        var opcion : Int = 1
+        breakable {
 
-        for (f <- h.getHorariosReserva() ) {
-
-            print("\n[" + opcion + "] [" + f._hora_inicio + ":00 - " + f._hora_final +":00]"   ) 
-            opcion = opcion + 1 
-            cont = cont + 1
+            for (salon <- _edificio.getSalones()) {
+                if (salon.getNombre() == nombre_salon) {
+                    existe = true
+                    break
+                }
+                pos = pos + 1
+            }
         }
-*/
-       
+
+        if (existe) {
+
+            println("     SALON " + nombre_salon + " Temperatura: " + _edificio.getSalones()(pos).getTemperatura() + " C")
+
+            for (f <- _horarios_reservas) {
+
+                if (f.getSalon().getNombre() == _edificio.getSalones()(pos).getNombre()) {
+
+                    var opcion : Int = 1
+                    for (h <- f.getHorariosReserva()) {
+                        print("\n[" + opcion + "] [" + h._hora_inicio + ":00 - " + 
+                        h._hora_final +":00] " + verEstadoSalon(_edificio.getSalones()(pos), h)  ) 
+                        opcion = opcion + 1
+                    }
+                }
+            }
+
+        }
+
+        else {
+            println("El salon " + nombre_salon + " no existe.")
+        }
     }
 
     def salonDisponible(salon : Salon) : Boolean = {
@@ -237,7 +259,7 @@ class Sistema {
         _reservas = nueva_reserva :: _reservas
     } 
 
-    def actualizarEstadoSalon() : Unit = {
+    def actualizarEstadosSalon() : Unit = {
 
         val hoy = Calendar.getInstance().getTime()
 
@@ -252,11 +274,76 @@ class Sistema {
         val hora_actual = formato_hora.format(hoy)
         val minutos_actual = formato_minutos.format(hoy)
         val amPm_actual = formato_amPm.format(hoy)
+        
 
-        for ( rv <- _reservas) {
+        for ( clase <- _clases) {
 
-            // Encendiendo luces
+            
 
+            if (clase.getFecha()._mes == mes_actual && clase.getFecha()._dia == dia_actual) {
+
+                var h_reserva : Int = (clase.getFecha()._hora_inicio).toInt
+                var h_actual : Int = (hora_actual).toInt
+                var min_actual : Int = (minutos_actual).toInt
+
+                // Encendiendo luces
+
+                if ( h_actual + 1 == h_reserva && min_actual >= 55 && min_actual <= 59)  {
+
+                    var pos : Int = 0
+
+                    breakable {
+                        for (salon <- _edificio.getSalones()) {
+                            if (salon.getNombre() == clase.getSalon().getNombre() && amPm_actual == clase.getFecha()._amPm ) {
+                                _edificio.getSalones()(pos).setLuz(true)
+                                break
+                            }
+                            pos = pos + 1
+                        }
+                    }
+                }
+
+                h_reserva = (clase.getFecha()._hora_final).toInt
+
+                if ( h_actual == h_reserva && min_actual >= 5 && min_actual <= 8)  {
+
+                    var pos : Int = 0
+                    var band : Boolean = false
+                    
+                    breakable {
+
+                        for (c <- _clases) {
+                            if (c.getSalon().getNombre() == clase.getSalon().getNombre()) {
+                                band = true
+                                break
+                            }
+                        }
+                    }
+                    breakable {
+
+                        for (r <- _reservas) {
+                            if (r.getSalon().getNombre() == clase.getSalon().getNombre()) {
+                                band = true
+                                break
+                            }
+                        }
+                    }
+
+                    if (!band) {
+
+                        breakable {
+
+                            for (salon <- _edificio.getSalones()) {
+                                if (salon.getNombre() == clase.getSalon().getNombre() && amPm_actual == clase.getFecha()._amPm ) {
+                                    _edificio.getSalones()(pos).setLuz(true)
+                                    break
+                                }
+                                pos = pos + 1
+                            }
+                        }
+                    }
+                }
+            } 
 
             // Apagando luces
 
@@ -295,6 +382,20 @@ class Sistema {
         }
     }
 
+    def modificarTemperatura(nombre_salon : String, nueva_temp : Double) : Unit = {
+    
+        var pos : Int = 0
+
+        breakable {
+            for (salon <- _edificio.getSalones()) {
+                if (salon.getNombre() == nombre_salon) {
+                    _edificio.getSalones()(pos).setTemperatura(nueva_temp)
+                    break
+                }
+                pos = pos + 1
+            }
+        }
+    }
 
           
 }
