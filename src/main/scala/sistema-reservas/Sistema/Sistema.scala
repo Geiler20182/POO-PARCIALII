@@ -114,16 +114,82 @@ class Sistema {
 
             if ( (s.getNombre().charAt(0)  == nombre_salon.charAt(0)) || (nombre_salon == "TODOS")) {
 
-                println("[" + sal + "] SALON " + s.getNombre() ) 
-                verHorarioSalon(s)
+                println( "\n[" + sal + "] SALON " + s.getNombre()) 
+                print("    HORARIO          ESTADO")                    
+
+                var opcion : Int = 0
+                for (f <- _horarios_reservas) {
+
+                    if (f.getSalon().getNombre() == s.getNombre()) {
+
+                        for (h <- f.getHorariosReserva()) {
+                            print("\n[" + opcion + "] [" + h._hora_inicio + ":00 - " + 
+                            h._hora_final +":00] " + verEstadoSalon(s, h)  ) 
+                            
+                        }
+                    }
+                }
+
                 sal = sal + 1
-                println("\n")
+                println()
             }
         }
     }
 
-    def verEstadoSalon(salon : Salon) : Unit = {
+    def verEstadoSalon(salon : Salon, fecha : Fecha) : String = {
+        
+        var estado = "DISPONIBLE"
+        var pos : Int = 0
 
+        breakable {
+            for (s <- _edificio.getSalones()) {
+                if (s.getNombre() == salon.getNombre()) break
+                pos = pos + 1
+            }
+        }
+
+        // Verificacion estado del salón
+        
+        if (_edificio.getSalones()(pos).getMantenimiento() == true)
+            estado = "En Mantenimiento"
+        
+        else  {
+
+            // Busqueda salon en cursos
+            var bandera : Boolean = false
+            breakable {
+
+                for ( c <- _clases) {
+                    if (c.getSalon().getNombre() == salon.getNombre
+                       && c.getFecha()._hora_inicio == fecha._hora_inicio
+                       && c.getFecha()._hora_final == fecha._hora_final) {
+                        estado = "Ocupado, clase de " + c.getAsignatura()
+                        bandera = true
+                        break
+                    }
+                }
+
+            }
+            // Busqueda salon en resevas 
+
+            if (!bandera) {
+
+                breakable {
+
+                    for ( r <- _reservas) {
+                        if (r.getSalon().getNombre() == salon.getNombre
+                        && r.getFecha()._hora_inicio == fecha._hora_inicio
+                        && r.getFecha()._hora_final == fecha._hora_final) {
+                            estado = "RESERVADO"
+                            break
+                        }
+                    }
+
+                }
+            }
+        }
+
+        return estado
     }
 
     def verHorarioSalon(salon : Salon) : Unit = {

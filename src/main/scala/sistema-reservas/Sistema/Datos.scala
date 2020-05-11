@@ -11,12 +11,12 @@ object Datos {
     var s2 : Salon = new Salon("LA1.1", 25)
     var s3 : Salon = new Salon("LA1.2", 25)
     var s4 : Salon = new Salon("LA1.3", 25)
-    var s5 : Salon = new Salon("LA1.4", 25)
+   /* var s5 : Salon = new Salon("LA1.4", 25)
     var s6 : Salon = new Salon("LA1.5", 25)
     var s7 : Salon = new Salon("LA1.6", 25)
     var s8 : Salon = new Salon("LA1.7", 25)
 
-    /*var c1 : Salon = new Salon("PL2.0", 35)
+    var c1 : Salon = new Salon("PL2.0", 35)
     var c2 : Salon = new Salon("PL2.1", 35)
     var c3 : Salon = new Salon("PL2.2", 35)
     var c4 : Salon = new Salon("PL2.3", 35)
@@ -52,7 +52,8 @@ object Datos {
     var t7 : Salon = new Salon("TC5.6", 70)
     var t8 : Salon = new Salon("TC5.7", 70)*/
 
-    salones = s1 :: s2 :: s3 :: s4 :: s5 :: s6 :: s7 :: s8 :: salones
+    salones = s1 :: s2 :: s3 :: s4 :: salones
+    //:: s5 :: s6 :: s7 :: s8 :: salones
     //salones = c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: salones 
     /*salones = p1 :: p2 :: p3 :: p4 :: p5 :: p6 :: p7 :: p8 :: salones 
     salones = a1 :: a2 :: a3 :: a4 :: a5 :: a6 :: a7 :: a8 :: salones 
@@ -114,15 +115,16 @@ object Datos {
 
     var reservas : List[Reserva] = List()   
 
-    var fecha1 : Fecha = new Fecha("07", "09", "AM", "10", "05")
-    var fecha2 : Fecha = new Fecha("09", "11", "AM", "10", "05")
-    var fecha3 : Fecha = new Fecha("11", "01", "AM", "10", "05") //TEST
+    var fecha1 : Fecha = new Fecha("11", "01", "AM", "10", "06")
+    var fecha2 : Fecha = new Fecha("06", "07", "PM", "10", "06")
+    var fecha3 : Fecha = new Fecha("07", "09", "AM", "10", "06") //TEST
 
     var r1 : Reserva = new Reserva(20, fecha1, s1)
-    var r2 : Reserva = new Reserva(20, fecha2, s1)
-    var r3 : Reserva = new Reserva(20, fecha3, s1)
+    var r2 : Reserva = new Reserva(20, fecha2, s2)
+    var r3 : Reserva = new Reserva(20, fecha3, s3)
+    var r4 : Reserva = new Reserva(20, fecha3, s3)
 
-    reservas = r1 :: r2 :: r3 :: reservas    
+    reservas = r1 :: r2 :: r3 :: r4 :: reservas    
 
     
     var fe1 : Fecha = new Fecha("07", "09", "AM", "10", "06")
@@ -134,10 +136,10 @@ object Datos {
 
     var cs1 : Curso =  new Curso("Matematicas Discretas", fe1, s1)
     var cs2 : Curso =  new Curso("Logica Digital", fe2, s1)
-    var cs3 : Curso =  new Curso("Ecuaciones Diferenciales", fe3, s3)
-    var cs4 : Curso =  new Curso("Ingles II", fe4, s4)
-    var cs5 : Curso =  new Curso("POO", fe5, s5)
-    var cs6 : Curso =  new Curso("Calculo Multivariable", fe6, s6)
+    var cs3 : Curso =  new Curso("Ecuaciones Diferenciales", fe3, s2)
+    var cs4 : Curso =  new Curso("Ingles II", fe4, s2)
+    var cs5 : Curso =  new Curso("POO", fe5, s3)
+    var cs6 : Curso =  new Curso("Calculo Multivariable", fe6, s4)
 
     var cursos : List[Curso] = List()
     cursos = cs1 :: cs2 :: cs3 :: cs4 ::  cs5 :: cs6 :: cursos

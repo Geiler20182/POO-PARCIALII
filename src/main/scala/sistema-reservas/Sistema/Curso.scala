@@ -2,7 +2,12 @@ package Sistema
 
 class Curso(nueva_asignatura : String, nueva_fecha : Fecha, nuevo_salon : Salon) {
     
-    var _asignatura : String = nueva_asignatura
-    var _fecha : Fecha = nueva_fecha
-    var _salon : Salon = nuevo_salon
+    private var _asignatura : String = nueva_asignatura
+    private var _fecha : Fecha = nueva_fecha
+    private var _salon : Salon = nuevo_salon
+
+    def getAsignatura() : String = _asignatura
+    def getFecha() : Fecha = _fecha
+    def getSalon() : Salon = _salon
+
 }
