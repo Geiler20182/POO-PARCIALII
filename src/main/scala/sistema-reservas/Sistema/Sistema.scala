@@ -7,16 +7,32 @@ import java.util.{Calendar, Date}
 
 class Sistema {
 
+    private var _clases : List[Curso] = Datos.BBDDCursos()
     private var _edificio : Edificio = new Edificio
     private var _reservas : List[Reserva] = Datos.BBDDReservas()
     private var _usuarios : List[Usuario] = Datos.BBDDUsuarios()
     private var _sesion : String = "CERRADA"
     private var _horarios_reservas : List[Horario] = Datos.BBDDHorarios()
-    
+
+
+    private var _tiempo_inicio_luz : Int = 5
+    private var _tiempo_final_luz : Int = 10
+    private var _tiempo_inicio_temp : Int = 10
+    private var _tiempo_final_temp : Int = 5
+    private var _tiempo_apertura_puertas : Int = 15 
+    private var _tiempo_cierre_puertas : Int = 10
+
     def getSesion() : String = _sesion
     def getEdificio() : Edificio = _edificio
     def getHorarios() : List[Horario] = _horarios_reservas
     
+    def setTiempoInicioLuz(nuevo_tiempo : Int ) : Unit = _tiempo_inicio_luz = nuevo_tiempo
+    def setTiempoFinalLuz(nuevo_tiempo : Int ) : Unit = _tiempo_final_luz = nuevo_tiempo
+    def setTiempoInicioAires(nuevo_tiempo : Int ) : Unit = _tiempo_inicio_temp = nuevo_tiempo
+    def setTiempoFinalAires(nuevo_tiempo : Int ) : Unit = _tiempo_final_temp = nuevo_tiempo
+    def setTiempoAperturaPuerta(nuevo_tiempo : Int ) : Unit = _tiempo_apertura_puertas = nuevo_tiempo
+    def setTiempoCierrePuerta(nuevo_tiempo : Int ) : Unit = _tiempo_cierre_puertas = nuevo_tiempo
+
     def iniciarSesion(correo : String, contrasena : String ) : Unit = {
 
         breakable {
@@ -92,64 +108,38 @@ class Sistema {
     def mostrarSalones(nombre_salon : String ) : Unit = {
 
         var contador : Int = 0
-        breakable {
-            var sal : Int = 1
-            for (h <- _horarios_reservas ) {
+        var sal : Int = 1
 
-                if (h.getSalon().getNombre().charAt(0)  == nombre_salon.charAt(0)) {
+        for (s <- _edificio.getSalones()) {
 
-                    println("\n[" + sal + "] SALON " + h.getSalon().getNombre() ) 
-                    verHorarioSalon(h)
-                    sal = sal + 1
-                }
-                contador = contador + 1
-                if (contador == 1) break 
-                println()
+            if ( (s.getNombre().charAt(0)  == nombre_salon.charAt(0)) || (nombre_salon == "TODOS")) {
+
+                println("[" + sal + "] SALON " + s.getNombre() ) 
+                verHorarioSalon(s)
+                sal = sal + 1
+                println("\n")
             }
         }
+    }
 
+    def verEstadoSalon(salon : Salon) : Unit = {
 
     }
 
-    def verHorarioSalon(h : Horario) : Unit = {
+    def verHorarioSalon(salon : Salon) : Unit = {
 
-        
-        print("\nHORARIO AM\t    ESTADO\n")   
+
+        /*print("\n     HORARIO    \tESTADO\n")   
         var cont : Int = 0
         var opcion : Int = 1
 
         for (f <- h.getHorariosReserva() ) {
-            if (f._amPm == "AM" && f._dia == "10" && f._mes == "05") {
 
-                var estado : String = "DISPONIBLE"
-
-                if (f._disponible == false) {
-
-                    estado = "RESERVADO"
-                }
-                
-                print("\n[" + opcion + "] [" + f._hora_inicio + ":00 - " + f._hora_final +":00]" + " " + estado) 
-                opcion = opcion + 1 
-            }
+            print("\n[" + opcion + "] [" + f._hora_inicio + ":00 - " + f._hora_final +":00]"   ) 
+            opcion = opcion + 1 
             cont = cont + 1
         }
-
-        print("\n\nHORARIO PM\t    ESTADO\n")   
-        cont = 0
-
-        for (f <- h.getHorariosReserva() ) {
-            
-            var estado : String = "DISPONIBLE"
-
-            if (f._disponible == false) {
-                estado = "RESERVADO"
-            }
-            if (f._amPm == "PM" && f._dia == "10" && f._mes == "05") {
-                print("\n[" + opcion + "] [" + f._hora_inicio + ":00 - " + f._hora_final +":00]" + " " + estado) 
-                opcion = opcion + 1 
-            }
-            cont = cont + 1
-        }
+*/
        
     }
 
@@ -181,11 +171,11 @@ class Sistema {
         _reservas = nueva_reserva :: _reservas
     } 
 
-    def encerderLuces() : Unit = {
+    def actualizarEstadoSalon() : Unit = {
 
         val hoy = Calendar.getInstance().getTime()
 
-        val formato_mes =new SimpleDateFormat("MM")
+        val formato_mes = new SimpleDateFormat("MM")
         val formato_dia = new SimpleDateFormat("dd")
         val formato_hora = new SimpleDateFormat("hh")
         val formato_minutos = new SimpleDateFormat("mm")
@@ -197,19 +187,48 @@ class Sistema {
         val minutos_actual = formato_minutos.format(hoy)
         val amPm_actual = formato_amPm.format(hoy)
 
-        
-        for ( rv <-  _reservas) {
+        for ( rv <- _reservas) {
 
-            if (rv.getFecha()._mes == mes_actual && rv.getFecha()._dia == dia_actual) {
+            // Encendiendo luces
 
-                var h_reserva : Int = (rv.getFecha()._hora_final).toInt
+
+            // Apagando luces
+
+
+            // Encendiendo Aires
+
+
+            // Apagando Aires
+
+
+            // Abriendo puertas 
+
+
+            // Cerrando puertas
+
+            /*if (rv.getFecha()._mes == mes_actual && rv.getFecha()._dia == dia_actual) {
+
+                var h_reserva : Int = (rv.getFecha()._hora_inicio).toInt
                 var h_actual : Int = (hora_actual).toInt
+                var min_actual : Int = (minutos_actual).toInt
 
-                println(h_reserva + " " + h_actual)
-                println("MES: " + mes_actual)
-            }
+                if ( h_actual + 1 == h_reserva && min_actual >= 40 && min_actual <= 50)  {
+
+                    var pos : Int = 0
+                    breakable {
+                        for (salon <- _edificio.getSalones()) {
+                            if (salon.getNombre() == rv.getSalon().getNombre() && amPm_actual == rv.getFecha()._amPm ) {
+                                _edificio.getSalones()(pos).setLuz(true)
+                                break
+                            }
+                            pos = pos + 1
+                        }
+                    }
+                }
+            }*/
         }
     }
+
 
           
 }

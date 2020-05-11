@@ -10,10 +10,12 @@ object Test {
     def main(args: Array[String]) : Unit = {
 
         var sistema : Sistema =  new Sistema
+        
+        println("\n---------------------\n")
+        sistema.mostrarSalones("LA") 
+        println("---------------------\n")
 
-
-        sistema.encerderLuces()
-        /*sistema.mostrarSalones("LA") 
+        /*
 
 
         for ( h <- sistema.getHorarios()) {
