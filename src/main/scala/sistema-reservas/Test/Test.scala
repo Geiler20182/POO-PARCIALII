@@ -14,9 +14,20 @@ object Test {
         println("\n---------------------")
         //sistema.mostrarSalones("LA") 
         sistema.modificarTemperatura("LA1.0", 58.4)
-        sistema.inHabilitarSalon("LA1.4")
-        sistema.buscarSalonHorarios("LA1.4")
-        println("\n---------------------\n")
+        //sistema.inHabilitarSalon("LA1.4")
+        //sistema.buscarSalonHorarios("LA1.4")
+        sistema.actualizarEstadosSalon() 
+        /*println("----------------")
+        sistema.verEstadosSalon("LA1.0")
+        println("----------------")
+        sistema.verEstadosSalon("LA1.1")
+        println("----------------")
+        sistema.verEstadosSalon("LA1.2")
+        println("----------------")
+        sistema.verEstadosSalon("LA1.3")
+        println("----------------")
+        sistema.verEstadosSalon("LA1.4")
+        println("\n---------------------\n")*/
 
         /*
 

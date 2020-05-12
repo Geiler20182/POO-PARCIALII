@@ -246,7 +246,8 @@ class Sistema {
     def verificarReserva(salon : Salon, fecha : Fecha) : Boolean = {
 
         for (reserva <- _reservas) {
-            if (reserva.getSalon().getNombre() == salon.getNombre() ) {
+            if (reserva.getSalon().getNombre() == salon.getNombre() && 
+            reserva.getFecha()._hora_inicio == fecha._hora_inicio ) {
                 return true
             }
         }
@@ -275,111 +276,102 @@ class Sistema {
         val minutos_actual = formato_minutos.format(hoy)
         val amPm_actual = formato_amPm.format(hoy)
         
+        // Salones que estan en clase y/0 reservados
 
-        for ( clase <- _clases) {
+        var clases_y_reservas : List[Salon] = List()
+        var h_actual : Int = 6//(hora_actual).toInt
+        var min_actual : Int = 10//(minutos_actual).toInt
+        
+        // Encendiendo luces y apertura puertas
 
+        for (curso <- _clases) {
             
-
-            if (clase.getFecha()._mes == mes_actual && clase.getFecha()._dia == dia_actual) {
-
-                var h_reserva : Int = (clase.getFecha()._hora_inicio).toInt
-                var h_actual : Int = (hora_actual).toInt
-                var min_actual : Int = (minutos_actual).toInt
-
-                // Encendiendo luces
-
-                if ( h_actual + 1 == h_reserva && min_actual >= 55 && min_actual <= 59)  {
-
-                    var pos : Int = 0
-
-                    breakable {
-                        for (salon <- _edificio.getSalones()) {
-                            if (salon.getNombre() == clase.getSalon().getNombre() && amPm_actual == clase.getFecha()._amPm ) {
-                                _edificio.getSalones()(pos).setLuz(true)
-                                break
-                            }
-                            pos = pos + 1
-                        }
-                    }
-                }
-
-                h_reserva = (clase.getFecha()._hora_final).toInt
-
-                if ( h_actual == h_reserva && min_actual >= 5 && min_actual <= 8)  {
-
-                    var pos : Int = 0
-                    var band : Boolean = false
+            var h_reserva : Int = (curso.getFecha()._hora_inicio).toInt
+            if ( h_actual + 1 == h_reserva && min_actual >= (59 - _tiempo_inicio_luz) && min_actual <= 59) {
+                _edificio.getSalones()(retornarPosSalon(curso.getSalon().getNombre())).setLuz(true)
+                //clases_y_reservas = curso.getSalon() :: clases_y_reservas
+            }
+            
+            if (h_actual + 1 == h_reserva && min_actual >= (59 - _tiempo_apertura_puertas) 
+                && min_actual <= 59) {
                     
-                    breakable {
-
-                        for (c <- _clases) {
-                            if (c.getSalon().getNombre() == clase.getSalon().getNombre()) {
-                                band = true
-                                break
-                            }
-                        }
-                    }
-                    breakable {
-
-                        for (r <- _reservas) {
-                            if (r.getSalon().getNombre() == clase.getSalon().getNombre()) {
-                                band = true
-                                break
-                            }
-                        }
-                    }
-
-                    if (!band) {
-
-                        breakable {
-
-                            for (salon <- _edificio.getSalones()) {
-                                if (salon.getNombre() == clase.getSalon().getNombre() && amPm_actual == clase.getFecha()._amPm ) {
-                                    _edificio.getSalones()(pos).setLuz(true)
-                                    break
-                                }
-                                pos = pos + 1
-                            }
-                        }
-                    }
+                if (!verificarReserva(curso.getSalon(), new Fecha("05","","","",""))) { //cambiar
+                    //clases_y_reservas = curso.getSalon() :: clases_y_reservas
+                    _edificio.getSalones()(retornarPosSalon(curso.getSalon().getNombre())).setCerradura(true)
                 }
-            } 
-
-            // Apagando luces
-
-
-            // Encendiendo Aires
-
-
-            // Apagando Aires
-
-
-            // Abriendo puertas 
-
-
-            // Cerrando puertas
-
-            /*if (rv.getFecha()._mes == mes_actual && rv.getFecha()._dia == dia_actual) {
-
-                var h_reserva : Int = (rv.getFecha()._hora_inicio).toInt
-                var h_actual : Int = (hora_actual).toInt
-                var min_actual : Int = (minutos_actual).toInt
-
-                if ( h_actual + 1 == h_reserva && min_actual >= 40 && min_actual <= 50)  {
-
-                    var pos : Int = 0
-                    breakable {
-                        for (salon <- _edificio.getSalones()) {
-                            if (salon.getNombre() == rv.getSalon().getNombre() && amPm_actual == rv.getFecha()._amPm ) {
-                                _edificio.getSalones()(pos).setLuz(true)
-                                break
-                            }
-                            pos = pos + 1
-                        }
-                    }
-                }
-            }*/
+            }
         }
+
+        for (r <- _reservas) {
+            
+            var h_reserva : Int = (r.getFecha()._hora_inicio).toInt
+            if ( h_actual + 1 == h_reserva && min_actual >= (59 - _tiempo_inicio_luz) && min_actual <= 59) {
+                //clases_y_reservas = r.getSalon() :: clases_y_reservas
+                _edificio.getSalones()(retornarPosSalon(r.getSalon().getNombre())).setLuz(true)
+            }
+        }    
+
+        /*for (cr <- clases_y_reservas ) {
+            _edificio.getSalones()(retornarPosSalon(cr.getNombre())).setLuz(true)
+        }*/
+        
+
+        // Apagando luces y cerrando puerta
+
+        for (curso <- _clases) {
+
+            var h_reserva : Int = 6//(curso.getFecha()._hora_final).toInt
+            
+            if  (h_actual == h_reserva && min_actual >= _tiempo_final_luz &&
+             min_actual <= _tiempo_final_luz + 2) {
+                 
+                //var fecha_actual : new Fecha("05","z","z","z","z")
+                if (!verificarReserva(curso.getSalon(), new Fecha("06","","","",""))) { //cambiar
+                  _edificio.getSalones()(retornarPosSalon(curso.getSalon().getNombre())).setLuz(true)
+                 //clases_y_reservas = curso.getSalon() :: clases_y_reservas
+                  //  println("PETER")
+                  //  println(curso.getSalon().getNombre()+ " " + curso.getFecha()._hora_inicio)
+
+                }
+                
+                if (h_actual == h_reserva && min_actual >=  _tiempo_cierre_puertas && min_actual < _tiempo_cierre_puertas + 2) {
+                    
+                    if (!verificarReserva(curso.getSalon(), new Fecha("05","","","",""))) { //cambiar
+                    //clases_y_reservas = curso.getSalon() :: clases_y_reservas
+                        _edificio.getSalones()(retornarPosSalon(curso.getSalon().getNombre())).setCerradura(false)
+                    }
+                }
+            }
+            
+        }
+
+        for (r <- _reservas) {
+            
+            var h_reserva : Int = 6//(r.getFecha()._hora_inicio).toInt
+            if ( h_actual == h_reserva && min_actual >= _tiempo_final_luz &&
+                 min_actual <= _tiempo_final_luz + 2)  {
+                if (!verificarReserva(r.getSalon(), new Fecha("06","","","",""))) { //cambiar
+                    _edificio.getSalones()(retornarPosSalon(r.getSalon().getNombre())).setLuz(true)
+                    //clases_y_reservas = r.getSalon() :: clases_y_reservas
+                    //  println("DONKER")
+                    // println(r.getSalon().getNombre() + " " + r.getFecha()._hora_inicio)
+
+                }
+                
+                if (h_actual == h_reserva && min_actual >=  _tiempo_cierre_puertas && min_actual < _tiempo_cierre_puertas + 2) {
+                    
+                    if (!verificarReserva(r.getSalon(), new Fecha("05","","","",""))) { //cambiar
+                    //clases_y_reservas = curso.getSalon() :: clases_y_reservas
+                        _edificio.getSalones()(retornarPosSalon(r.getSalon().getNombre())).setCerradura(false)
+                    }
+                }
+
+            }
+        }    
+
+        
+
+        
     }
 
     def modificarTemperatura(nombre_salon : String, nueva_temp : Double) : Unit = {
@@ -397,5 +389,16 @@ class Sistema {
         }
     }
 
-          
+    def verEstadosSalon(nombre_salon : String) : Unit = {
+        var pos : Int =  retornarPosSalon(nombre_salon)
+
+        if (pos != -1) {
+            println("SALON " + _edificio.getSalones()(pos).getNombre())
+            println("Temperatura : " +  _edificio.getSalones()(pos).getTemperatura())
+            println("Puerta : " +  _edificio.getSalones()(pos).getCerradura())
+            println("Luz : " + _edificio.getSalones()(pos).getLuz())
+            println("Capaciad : " + _edificio.getSalones()(pos).getCapacidad())
+            println("Mantenimiento : " + _edificio.getSalones()(pos).getMantenimiento())
+        }
+    }     
 }

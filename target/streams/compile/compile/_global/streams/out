@@ -1,7 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0mC:\Users\Mejia\Desktop\POO-SCALA\POO-PARCIALII\src\main\scala\sistema-reservas\Sistema\Sistema.scala:316:39: value getNombre is not a member of Sistema.Curso[0m
-[0m[[0m[31merror[0m] [0m[0m                            if (salon.getNombre() == clase.getSalon().getNombre()) {[0m
-[0m[[0m[31merror[0m] [0m[0m                                      ^[0m
-[0m[[0m[31merror[0m] [0m[0mC:\Users\Mejia\Desktop\POO-SCALA\POO-PARCIALII\src\main\scala\sistema-reservas\Sistema\Sistema.scala:325:39: value getNombre is not a member of Sistema.Reserva[0m
-[0m[[0m[31merror[0m] [0m[0m                            if (salon.getNombre() == clase.getSalon().getNombre()) {[0m
-[0m[[0m[31merror[0m] [0m[0m                                      ^[0m
-[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Mejia\Desktop\POO-SCALA\POO-PARCIALII\src\main\scala\sistema-reservas\Sistema\Sistema.scala:373:43: not found: value curso[0m
+[0m[[0m[31merror[0m] [0m[0m                    if (!verificarReserva(curso.getSalon(), new Fecha("05","","","",""))) { //cambiar[0m
+[0m[[0m[31merror[0m] [0m[0m                                          ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m

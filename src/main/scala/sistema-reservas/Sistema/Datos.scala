@@ -94,12 +94,12 @@ object Datos {
             else 
                 dia = dias.toString */
 
-            var f1 : Fecha = new Fecha("07", "09", "AM", "10", "05")// dia, mes)
-            var f2 : Fecha = new Fecha("09", "11", "AM", "10", "05")//dia, mes)
-            var f3 : Fecha = new Fecha("11", "01", "AM", "10", "05")//dia, mes)
-            var f4 : Fecha = new Fecha("02", "04", "PM", "10", "05")//dia, mes)
-            var f5 : Fecha = new Fecha("04", "06", "PM", "10", "05")//dia, mes)
-            var f6 : Fecha = new Fecha("06", "07", "PM", "10", "05")//dia, mes)
+            var f1 : Fecha = new Fecha("07", "09", "AM", "11", "05")// dia, mes)
+            var f2 : Fecha = new Fecha("09", "11", "AM", "11", "05")//dia, mes)
+            var f3 : Fecha = new Fecha("11", "01", "AM", "11", "05")//dia, mes)
+            var f4 : Fecha = new Fecha("02", "04", "PM", "11", "05")//dia, mes)
+            var f5 : Fecha = new Fecha("04", "06", "PM", "11", "05")//dia, mes)
+            var f6 : Fecha = new Fecha("06", "07", "PM", "11", "05")//dia, mes)
 
             fechas = f1 :: f2 :: f3 :: f4 :: f5 :: f6 :: fechas
             //dias = dias + 1
@@ -117,24 +117,24 @@ object Datos {
 
     var reservas : List[Reserva] = List()   
 
-    var fecha1 : Fecha = new Fecha("11", "01", "AM", "10", "06")
-    var fecha2 : Fecha = new Fecha("06", "07", "PM", "10", "06")
-    var fecha3 : Fecha = new Fecha("07", "09", "AM", "10", "06") //TEST
+    var fecha1 : Fecha = new Fecha("11", "01", "AM", "11", "05")
+    var fecha2 : Fecha = new Fecha("06", "07", "PM", "11", "05")
+    var fecha3 : Fecha = new Fecha("11", "01", "AM", "11", "05") //TEST
 
     var r1 : Reserva = new Reserva(20, fecha1, s1)
     var r2 : Reserva = new Reserva(20, fecha2, s2)
     var r3 : Reserva = new Reserva(20, fecha3, s3)
-    var r4 : Reserva = new Reserva(20, fecha3, s3)
+    var r4 : Reserva = new Reserva(20, fecha3, s5)
 
     reservas = r1 :: r2 :: r3 :: r4 :: reservas    
 
     
-    var fe1 : Fecha = new Fecha("07", "09", "AM", "10", "06")
-    var fe2 : Fecha = new Fecha("09", "11", "AM", "10", "06")
-    var fe3 : Fecha = new Fecha("11", "01", "AM", "10", "06") 
-    var fe4 : Fecha = new Fecha("02", "04", "PM", "10", "06")
-    var fe5 : Fecha = new Fecha("04", "06", "PM", "10", "06")
-    var fe6 : Fecha = new Fecha("06", "07", "PM", "10", "06") 
+    var fe1 : Fecha = new Fecha("07", "09", "AM", "11", "05")
+    var fe2 : Fecha = new Fecha("09", "11", "AM", "11", "05")
+    var fe3 : Fecha = new Fecha("11", "01", "AM", "11", "05") 
+    var fe4 : Fecha = new Fecha("02", "04", "PM", "11", "05")
+    var fe5 : Fecha = new Fecha("04", "06", "PM", "11", "05")
+    var fe6 : Fecha = new Fecha("06", "07", "PM", "11", "05") 
 
     var cs1 : Curso =  new Curso("Matematicas Discretas", fe1, s1)
     var cs2 : Curso =  new Curso("Logica Digital", fe2, s1)
