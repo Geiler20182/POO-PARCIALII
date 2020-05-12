@@ -1,6 +1,7 @@
 package Test
 
 import scala.io._
+import scala.util._
 import Sistema._
 
 object InterfazSistema  extends App {
@@ -48,9 +49,9 @@ object InterfazSistema  extends App {
                 }
             }
 
-            //else if (opcion == "D") {
-
-            //}
+            else if (opcion == "D") {
+                cierreSistema = true
+            }
 
         }
 
@@ -65,22 +66,57 @@ object InterfazSistema  extends App {
             menuSistemaUsuario()
             menuAdministrador()
 
+            println("\nIngrese una opcion")
+            opcion = StdIn.readLine()
+
             if (opcion == "A") {
-
+                
+                println("Ingrese el nombre del salon")
+                var nombre_salon : String = StdIn.readLine()
+                print("\n")
+                sistema.buscarSalonHorarios(nombre_salon)        
             }
-
+            
             else if (opcion == "B") {
-
+                sistema.mostrarSalones("TODOS")
             }
 
             else if (opcion == "1") {
-
+                
+                println("\nIngrese el nombre del salon a Inhabilitar")
+                var nombre_salon : String = StdIn.readLine()
+                sistema.inHabilitarSalon(nombre_salon)
             }
+
             else if (opcion == "2") {
+            
+                println("\nIngrese el nombre del salon a habilitar")
+                var nombre_salon : String = StdIn.readLine()
+                sistema.habilitarSalon(nombre_salon)
 
             }
             else if (opcion == "3") {
 
+                println("\nIngrese el nombre del salon que desea cambiar la temperatura")
+                var nombre_salon : String = StdIn.readLine()
+
+                if (sistema.buscarSalon(nombre_salon)) {
+
+                    println("Ingrese la nueva temperatura")
+
+                    try {
+
+                        var temperatura : Double = StdIn.readLine().toDouble
+                        sistema.modificarTemperatura(nombre_salon, temperatura)
+                    } catch {
+                        
+                        case e => println("La temperatura debe ser un numero")
+                    }
+
+                }
+                else {
+                    println("Error, El salon no existe")
+                }
             }
             else if (opcion == "4") {
 
@@ -98,7 +134,6 @@ object InterfazSistema  extends App {
                 cierreSistema = true
             }
 
-            cierreSistema = true
         }
 
         else {

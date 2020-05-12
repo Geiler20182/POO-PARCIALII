@@ -12,9 +12,9 @@ object Datos {
     var s3 : Salon = new Salon("LA1.2", 25)
     var s4 : Salon = new Salon("LA1.3", 25)
     var s5 : Salon = new Salon("LA1.4", 25)
+    var s6 : Salon = new Salon("LA1.5", 25)
 
    /* 
-    var s6 : Salon = new Salon("LA1.5", 25)
     var s7 : Salon = new Salon("LA1.6", 25)
     var s8 : Salon = new Salon("LA1.7", 25)
 
@@ -54,7 +54,7 @@ object Datos {
     var t7 : Salon = new Salon("TC5.6", 70)
     var t8 : Salon = new Salon("TC5.7", 70)*/
 
-    salones = s1 :: s2 :: s3 :: s4 :: s5 :: salones
+    salones = s1 :: s2 :: s3 :: s4 :: s5 :: s6 :: salones
     //:: s5 :: s6 :: s7 :: s8 :: salones
     //salones = c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: salones 
     /*salones = p1 :: p2 :: p3 :: p4 :: p5 :: p6 :: p7 :: p8 :: salones 

@@ -87,6 +87,12 @@ class Sistema {
                         break
                     }
                 }
+                for (clase <- _clases) {
+                    if (_edificio.getSalones()(pos).getNombre() == clase.getSalon().getNombre() ) {
+                        band  = true
+                        break
+                    }
+                }
             }
 
             if (band == false) {
