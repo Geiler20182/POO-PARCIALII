@@ -1,4 +1,7 @@
-[0m[[0m[31merror[0m] [0m[0mC:\Users\Mejia\Desktop\POO-SCALA\POO-PARCIALII\src\main\scala\sistema-reservas\Sistema\Sistema.scala:91:74: value getNombre is not a member of Sistema.Curso[0m
-[0m[[0m[31merror[0m] [0m[0m                    if (_edificio.getSalones()(pos).getNombre() == clase.getNombre() ) {[0m
-[0m[[0m[31merror[0m] [0m[0m                                                                         ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Mejia\Desktop\POO-SCALA\POO-PARCIALII\src\main\scala\sistema-reservas\Sistema\Datos.scala:64:5: not found: value fechas[0m
+[0m[[0m[31merror[0m] [0m[0m    fechas = f1 :: f2 :: f3 :: f4 :: f5 :: f6 :: fechas[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Mejia\Desktop\POO-SCALA\POO-PARCIALII\src\main\scala\sistema-reservas\Sistema\Datos.scala:70:47: not found: value fechas[0m
+[0m[[0m[31merror[0m] [0m[0m        var h1 : Horario = new Horario(salon, fechas)[0m
+[0m[[0m[31merror[0m] [0m[0m                                              ^[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m

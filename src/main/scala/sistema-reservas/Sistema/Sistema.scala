@@ -25,7 +25,8 @@ class Sistema {
     def getSesion() : String = _sesion
     def getEdificio() : Edificio = _edificio
     def getHorarios() : List[Horario] = _horarios_reservas
-    
+
+    def setSesion(sesion : String) : Unit = _sesion = sesion
     def setTiempoInicioLuz(nuevo_tiempo : Int ) : Unit = _tiempo_inicio_luz = nuevo_tiempo
     def setTiempoFinalLuz(nuevo_tiempo : Int ) : Unit = _tiempo_final_luz = nuevo_tiempo
     def setTiempoInicioAires(nuevo_tiempo : Int ) : Unit = _tiempo_inicio_temp = nuevo_tiempo
@@ -285,8 +286,8 @@ class Sistema {
         // Salones que estan en clase y/0 reservados
 
         var clases_y_reservas : List[Salon] = List()
-        var h_actual : Int = 6//(hora_actual).toInt
-        var min_actual : Int = 10//(minutos_actual).toInt
+        var h_actual : Int = (hora_actual).toInt
+        var min_actual : Int = (minutos_actual).toInt
         
         // Encendiendo luces y apertura puertas
 
@@ -295,14 +296,12 @@ class Sistema {
             var h_reserva : Int = (curso.getFecha()._hora_inicio).toInt
             if ( h_actual + 1 == h_reserva && min_actual >= (59 - _tiempo_inicio_luz) && min_actual <= 59) {
                 _edificio.getSalones()(retornarPosSalon(curso.getSalon().getNombre())).setLuz(true)
-                //clases_y_reservas = curso.getSalon() :: clases_y_reservas
             }
             
             if (h_actual + 1 == h_reserva && min_actual >= (59 - _tiempo_apertura_puertas) 
                 && min_actual <= 59) {
                     
                 if (!verificarReserva(curso.getSalon(), new Fecha("05","","","",""))) { //cambiar
-                    //clases_y_reservas = curso.getSalon() :: clases_y_reservas
                     _edificio.getSalones()(retornarPosSalon(curso.getSalon().getNombre())).setCerradura(true)
                 }
             }
@@ -317,33 +316,22 @@ class Sistema {
             }
         }    
 
-        /*for (cr <- clases_y_reservas ) {
-            _edificio.getSalones()(retornarPosSalon(cr.getNombre())).setLuz(true)
-        }*/
-        
-
         // Apagando luces y cerrando puerta
 
         for (curso <- _clases) {
 
-            var h_reserva : Int = 6//(curso.getFecha()._hora_final).toInt
+            var h_reserva : Int = (curso.getFecha()._hora_final).toInt
             
             if  (h_actual == h_reserva && min_actual >= _tiempo_final_luz &&
              min_actual <= _tiempo_final_luz + 2) {
                  
-                //var fecha_actual : new Fecha("05","z","z","z","z")
                 if (!verificarReserva(curso.getSalon(), new Fecha("06","","","",""))) { //cambiar
                   _edificio.getSalones()(retornarPosSalon(curso.getSalon().getNombre())).setLuz(true)
-                 //clases_y_reservas = curso.getSalon() :: clases_y_reservas
-                  //  println("PETER")
-                  //  println(curso.getSalon().getNombre()+ " " + curso.getFecha()._hora_inicio)
-
                 }
                 
                 if (h_actual == h_reserva && min_actual >=  _tiempo_cierre_puertas && min_actual < _tiempo_cierre_puertas + 2) {
                     
                     if (!verificarReserva(curso.getSalon(), new Fecha("05","","","",""))) { //cambiar
-                    //clases_y_reservas = curso.getSalon() :: clases_y_reservas
                         _edificio.getSalones()(retornarPosSalon(curso.getSalon().getNombre())).setCerradura(false)
                     }
                 }
@@ -353,31 +341,22 @@ class Sistema {
 
         for (r <- _reservas) {
             
-            var h_reserva : Int = 6//(r.getFecha()._hora_inicio).toInt
+            var h_reserva : Int = (r.getFecha()._hora_inicio).toInt
             if ( h_actual == h_reserva && min_actual >= _tiempo_final_luz &&
                  min_actual <= _tiempo_final_luz + 2)  {
                 if (!verificarReserva(r.getSalon(), new Fecha("06","","","",""))) { //cambiar
                     _edificio.getSalones()(retornarPosSalon(r.getSalon().getNombre())).setLuz(true)
-                    //clases_y_reservas = r.getSalon() :: clases_y_reservas
-                    //  println("DONKER")
-                    // println(r.getSalon().getNombre() + " " + r.getFecha()._hora_inicio)
-
                 }
                 
                 if (h_actual == h_reserva && min_actual >=  _tiempo_cierre_puertas && min_actual < _tiempo_cierre_puertas + 2) {
                     
                     if (!verificarReserva(r.getSalon(), new Fecha("05","","","",""))) { //cambiar
-                    //clases_y_reservas = curso.getSalon() :: clases_y_reservas
                         _edificio.getSalones()(retornarPosSalon(r.getSalon().getNombre())).setCerradura(false)
                     }
                 }
 
             }
         }    
-
-        
-
-        
     }
 
     def modificarTemperatura(nombre_salon : String, nueva_temp : Double) : Unit = {
@@ -406,5 +385,38 @@ class Sistema {
             println("Capaciad : " + _edificio.getSalones()(pos).getCapacidad())
             println("Mantenimiento : " + _edificio.getSalones()(pos).getMantenimiento())
         }
-    }     
+    } 
+
+    def retornarFecha(pos : Int ) : Fecha = {
+
+        var f1 : Fecha = new Fecha("07", "09", "AM", "11", "05")// dia, mes)
+        var f2 : Fecha = new Fecha("09", "11", "AM", "11", "05")//dia, mes)
+        var f3 : Fecha = new Fecha("11", "01", "AM", "11", "05")//dia, mes)
+        var f4 : Fecha = new Fecha("02", "04", "PM", "11", "05")//dia, mes)
+        var f5 : Fecha = new Fecha("04", "06", "PM", "11", "05")//dia, mes)
+        var f6 : Fecha = new Fecha("06", "07", "PM", "11", "05")//dia, mes)
+
+        var fechas : List[Fecha]  = List()
+
+        fechas = f1 :: f2 :: f3 :: f4 :: f5 :: f6 :: fechas
+
+        if (pos >= 1 && pos <= 6) {
+
+            return fechas(pos - 1)
+        }
+
+        return null
+    } 
+
+    def verificarClase(salon : Salon, fecha : Fecha) : Boolean = {
+
+        for (c <- _clases) {
+
+            if (c.getSalon().getNombre() == salon.getNombre() && c.getFecha()._hora_inicio == fecha._hora_inicio) {
+                return true
+            }
+        }
+
+        return false
+    }   
 }
