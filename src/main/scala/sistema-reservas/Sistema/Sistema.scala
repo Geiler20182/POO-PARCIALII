@@ -217,7 +217,7 @@ class Sistema {
         if (existe) {
 
             var offOn : String = "Off"
-            var puert : String = "Cerrada"
+            var est_puerta : String = "Cerrada"
             
             if ( _edificio.getSalones()(pos).getLuz() == true )
                 offOn = "On"
