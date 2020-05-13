@@ -9,6 +9,8 @@ object InterfazSistema  extends App {
     var cierreSistema : Boolean = false 
     var sistema : Sistema = new Sistema
 
+    sistema.actualizarEstadosSalon()
+
     while(!cierreSistema) {
 
         var opcion : String = ""
@@ -147,10 +149,8 @@ object InterfazSistema  extends App {
                 }
                 
             }
-            else if (opcion == "2") {
 
-            }
-            else if (opcion == "3") {
+            else if (opcion == "2") {
                 sistema.setSesion("CERRADA")
             }
         }
@@ -312,6 +312,8 @@ object InterfazSistema  extends App {
                 println("\nOpcion incorrecta")
             }   
         }
+
+        sistema.actualizarEstadosSalon()
         println("\n")
     }
 
@@ -347,8 +349,7 @@ object InterfazSistema  extends App {
     def menuEstudiante() : Unit = {
         
         println("[1] Reservar un salon")
-        println("[2] Cancelar reserva")
-        println("[3] Salir")
+        println("[2] Salir")
 
     }
 }

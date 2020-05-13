@@ -216,7 +216,17 @@ class Sistema {
 
         if (existe) {
 
-            println("     SALON " + nombre_salon + " Temperatura: " + _edificio.getSalones()(pos).getTemperatura() + " C")
+            var offOn : String = "Off"
+            var puert : String = "Cerrada"
+            
+            if ( _edificio.getSalones()(pos).getLuz() == true )
+                offOn = "On"
+            
+            if (_edificio.getSalones()(pos).getCerradura() == true)
+                est_puerta = "Abierta"
+
+            println("     SALON " + nombre_salon + " Temperatura: " + _edificio.getSalones()(pos).getTemperatura() + " C"
+            + " LUZ : " + offOn + " Puerta : " + est_puerta)
 
             for (f <- _horarios_reservas) {
 
@@ -271,14 +281,10 @@ class Sistema {
 
         val hoy = Calendar.getInstance().getTime()
 
-        val formato_mes = new SimpleDateFormat("MM")
-        val formato_dia = new SimpleDateFormat("dd")
         val formato_hora = new SimpleDateFormat("hh")
         val formato_minutos = new SimpleDateFormat("mm")
         val formato_amPm = new SimpleDateFormat("a")
 
-        val mes_actual = formato_mes.format(hoy)
-        val dia_actual = formato_dia.format(hoy)
         val hora_actual = formato_hora.format(hoy)
         val minutos_actual = formato_minutos.format(hoy)
         val amPm_actual = formato_amPm.format(hoy)
@@ -288,20 +294,21 @@ class Sistema {
         var clases_y_reservas : List[Salon] = List()
         var h_actual : Int = (hora_actual).toInt
         var min_actual : Int = (minutos_actual).toInt
-        
+
         // Encendiendo luces y apertura puertas
 
         for (curso <- _clases) {
             
             var h_reserva : Int = (curso.getFecha()._hora_inicio).toInt
+
             if ( h_actual + 1 == h_reserva && min_actual >= (59 - _tiempo_inicio_luz) && min_actual <= 59) {
                 _edificio.getSalones()(retornarPosSalon(curso.getSalon().getNombre())).setLuz(true)
             }
             
             if (h_actual + 1 == h_reserva && min_actual >= (59 - _tiempo_apertura_puertas) 
                 && min_actual <= 59) {
-                    
-                if (!verificarReserva(curso.getSalon(), new Fecha("05","","","",""))) { //cambiar
+                
+                if (!verificarReserva(curso.getSalon(), new Fecha(hora_actual,"",""))) { 
                     _edificio.getSalones()(retornarPosSalon(curso.getSalon().getNombre())).setCerradura(true)
                 }
             }
@@ -311,7 +318,6 @@ class Sistema {
             
             var h_reserva : Int = (r.getFecha()._hora_inicio).toInt
             if ( h_actual + 1 == h_reserva && min_actual >= (59 - _tiempo_inicio_luz) && min_actual <= 59) {
-                //clases_y_reservas = r.getSalon() :: clases_y_reservas
                 _edificio.getSalones()(retornarPosSalon(r.getSalon().getNombre())).setLuz(true)
             }
         }    
@@ -325,13 +331,13 @@ class Sistema {
             if  (h_actual == h_reserva && min_actual >= _tiempo_final_luz &&
              min_actual <= _tiempo_final_luz + 2) {
                  
-                if (!verificarReserva(curso.getSalon(), new Fecha("06","","","",""))) { //cambiar
+                if (!verificarReserva(curso.getSalon(), new Fecha(hora_actual,"",""))) { 
                   _edificio.getSalones()(retornarPosSalon(curso.getSalon().getNombre())).setLuz(true)
                 }
                 
                 if (h_actual == h_reserva && min_actual >=  _tiempo_cierre_puertas && min_actual < _tiempo_cierre_puertas + 2) {
                     
-                    if (!verificarReserva(curso.getSalon(), new Fecha("05","","","",""))) { //cambiar
+                    if (!verificarReserva(curso.getSalon(), new Fecha(hora_actual,"",""))) { 
                         _edificio.getSalones()(retornarPosSalon(curso.getSalon().getNombre())).setCerradura(false)
                     }
                 }
@@ -344,13 +350,13 @@ class Sistema {
             var h_reserva : Int = (r.getFecha()._hora_inicio).toInt
             if ( h_actual == h_reserva && min_actual >= _tiempo_final_luz &&
                  min_actual <= _tiempo_final_luz + 2)  {
-                if (!verificarReserva(r.getSalon(), new Fecha("06","","","",""))) { //cambiar
+                if (!verificarReserva(r.getSalon(), new Fecha(hora_actual,"",""))) { 
                     _edificio.getSalones()(retornarPosSalon(r.getSalon().getNombre())).setLuz(true)
                 }
                 
                 if (h_actual == h_reserva && min_actual >=  _tiempo_cierre_puertas && min_actual < _tiempo_cierre_puertas + 2) {
                     
-                    if (!verificarReserva(r.getSalon(), new Fecha("05","","","",""))) { //cambiar
+                    if (!verificarReserva(r.getSalon(), new Fecha(hora_actual,"",""))) {
                         _edificio.getSalones()(retornarPosSalon(r.getSalon().getNombre())).setCerradura(false)
                     }
                 }
@@ -389,12 +395,12 @@ class Sistema {
 
     def retornarFecha(pos : Int ) : Fecha = {
 
-        var f1 : Fecha = new Fecha("07", "09", "AM", "11", "05")// dia, mes)
-        var f2 : Fecha = new Fecha("09", "11", "AM", "11", "05")//dia, mes)
-        var f3 : Fecha = new Fecha("11", "01", "AM", "11", "05")//dia, mes)
-        var f4 : Fecha = new Fecha("02", "04", "PM", "11", "05")//dia, mes)
-        var f5 : Fecha = new Fecha("04", "06", "PM", "11", "05")//dia, mes)
-        var f6 : Fecha = new Fecha("06", "07", "PM", "11", "05")//dia, mes)
+        var f1 : Fecha = new Fecha("07", "09", "AM")
+        var f2 : Fecha = new Fecha("09", "11", "AM")
+        var f3 : Fecha = new Fecha("11", "01", "AM")
+        var f4 : Fecha = new Fecha("02", "04", "PM")
+        var f5 : Fecha = new Fecha("04", "06", "PM")
+        var f6 : Fecha = new Fecha("06", "07", "PM")
 
         var fechas : List[Fecha]  = List()
 

@@ -1,7 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0mC:\Users\Mejia\Desktop\POO-SCALA\POO-PARCIALII\src\main\scala\sistema-reservas\Sistema\Datos.scala:64:5: not found: value fechas[0m
-[0m[[0m[31merror[0m] [0m[0m    fechas = f1 :: f2 :: f3 :: f4 :: f5 :: f6 :: fechas[0m
-[0m[[0m[31merror[0m] [0m[0m    ^[0m
-[0m[[0m[31merror[0m] [0m[0mC:\Users\Mejia\Desktop\POO-SCALA\POO-PARCIALII\src\main\scala\sistema-reservas\Sistema\Datos.scala:70:47: not found: value fechas[0m
-[0m[[0m[31merror[0m] [0m[0m        var h1 : Horario = new Horario(salon, fechas)[0m
-[0m[[0m[31merror[0m] [0m[0m                                              ^[0m
-[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Mejia\Desktop\POO-SCALA\POO-PARCIALII\src\main\scala\sistema-reservas\Sistema\Sistema.scala:345:64: not found: value curso[0m
+[0m[[0m[31merror[0m] [0m[0m                if (!verificarReserva(r.getSalon(), new Fecha((curso.getFecha()._hora_final),"",""))) { //cambiar[0m
+[0m[[0m[31merror[0m] [0m[0m                                                               ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m
